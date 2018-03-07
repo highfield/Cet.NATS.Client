@@ -1,0 +1,74 @@
+﻿
+/********************************************************************************
+ * The MIT License (MIT)
+ * 
+ * Copyright 2018+ Cet Electronics.
+ * 
+ * Based on the original work by Apcera Inc.
+ * https://github.com/nats-io/csharp-nats
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*********************************************************************************/
+
+namespace Cet.NATS.Client
+{
+    /// <summary>
+    /// Represents an INBOX-subscription used in the request-reply mechanism
+    /// </summary>
+    internal sealed class InboxSubscription
+        : SubscriptionBase
+    {
+        /// <summary>
+        /// Creates an instace of <see cref="InboxSubscription"/>
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="sid"></param>
+        /// <param name="subject"></param>
+        /// <param name="feedback"></param>
+        internal InboxSubscription(
+            SubscriptionPool owner,
+            long sid,
+            string subject,
+            IRequestReplayFeedback feedback
+            )
+            : base(owner, sid, subject, queue: string.Empty, useCache: false)
+        {
+            this._feedback = feedback;
+        }
+
+
+        private readonly IRequestReplayFeedback _feedback;
+
+
+        /// <summary>
+        /// Processes the <see cref="MsgOut"/> as just received from the <see cref="Parser"/>.
+        /// </summary>
+        /// <param name="message"></param>
+        internal override void ProcessMessage(
+            MsgOut message
+            )
+        {
+            //extract the request-ID from the message's subject
+            long reqId = Converters.StringToInt64(message.Subject.ToCharArray(), this.Subject.Length - 1);
+
+            //dispatches the message back to the reqest-reply manager
+            this._feedback.ProcessMessage(message, reqId);
+        }
+        
+    }
+}
