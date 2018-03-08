@@ -246,7 +246,7 @@ Each master sends N=1000 different messages of about 1k bytes. The slave makes a
 
 | NATS.Client (original) | |
 | --- | --- |
-The app stalls or timeouts: never been able to make it working.
+The app stalls or timeouts
 
 ## License
 MIT license: https://opensource.org/licenses/MIT
