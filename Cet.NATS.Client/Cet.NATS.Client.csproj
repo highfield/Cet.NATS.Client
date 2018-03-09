@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Company>Cet Electronics</Company>
+    <Authors>Mario Vernari</Authors>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/highfield/Cet.NATS.Client</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <Description>A C# client for NATS brokers.
+The fastest yet simplest way to exchange messages.</Description>
+    <PackageIconUrl>https://github.com/nats-io/nats-site/blob/master/src/img/large-logo.png</PackageIconUrl>
+    <Copyright>Copyirght 2018+</Copyright>
+    <PackageTags>NATS client messaging IoT</PackageTags>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
