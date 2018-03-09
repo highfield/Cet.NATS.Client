@@ -1,4 +1,6 @@
 # Cet.NATS.Client
+![Official NATS logo](https://github.com/nats-io/nats-site/blob/master/src/img/large-logo.png)
+
 A C# client for NATS brokers.
 
 > The fastest yet simplest way to exchange messages (after hairdressers, of course).
@@ -19,6 +21,9 @@ Here are some of the features:
 - sync and async interface
 
 > NOTE: this library exposes APIs which are different from the original version.
+
+## Installation
+The recommended way to install is via NuGet: https://www.nuget.org/packages/Cet.NATS.Client/
 
 ## Usage
 Here are just some examples on how to use.
@@ -205,8 +210,48 @@ The "master" client sends a request as a simple string message to the NATS broke
 
 
 ## Benchmarks
-Coming soon...
+Here are some performance results comparing this and the original NATS client.
 
+The source code of the above tests is in the *Cet.NATS.Client.DemoPerfCompare* project.
+The benchmarking environment is:
+- Windows 10 Pro x64
+- CPU AMD FX-6100 3.3G 3-cores
+- 8G RAM
+- NATS server running on the local machine
+- Clients running in "Release" mode
+
+### Test 1: pub-sub (passive-sync)
+A single publisher sends N=100k different messages of about 1k bytes. There are five subscription to the same subjects, so that each consumer will receive a copy of the message, and verifies it.
+
+| Cet.NATS.Client (this) | |
+| --- | --- |
+| duration | 12.1s |
+| data rate | 9.9MB/s |
+| RAM | 63MB |
+| CPU (avg) | 50% |
+
+| NATS.Client (original) | |
+| --- | --- |
+| duration | 10.1s |
+| data rate | 11.8MB/s |
+| RAM | 354MB |
+| CPU (avg) | 60% |
+
+### Test 2: request-reply
+A single "slave" with 5 (five) subscriptions, each to a different subject. Then 50 (fifty) "masters" requesting against the same "slave". A group of 10 (ten) masters send requests to the same subject.
+
+Each master sends N=1000 different messages of about 1k bytes. The slave makes a little change on the received request, the replies it back. Finally, the master checks for the expected response.
+
+| Cet.NATS.Client (this) | |
+| --- | --- |
+| duration | 21.3s |
+| data rate | 5.6MB/s |
+| RAM | 56MB |
+| CPU (avg) | 15% |
+
+| NATS.Client (original) | |
+| --- | --- |
+The app stalls or timeouts
 
 ## License
 MIT license: https://opensource.org/licenses/MIT
