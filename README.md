@@ -1,4 +1,6 @@
 # Cet.NATS.Client
+![Official NATS logo](https://github.com/nats-io/nats-site/blob/master/src/img/large-logo.png)
+
 A C# client for NATS brokers.
 
 > The fastest yet simplest way to exchange messages (after hairdressers, of course).
