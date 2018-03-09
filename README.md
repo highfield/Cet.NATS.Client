@@ -22,6 +22,9 @@ Here are some of the features:
 
 > NOTE: this library exposes APIs which are different from the original version.
 
+## Installation
+The recommended way to install is via NuGet: https://www.nuget.org/packages/Cet.NATS.Client/
+
 ## Usage
 Here are just some examples on how to use.
 
